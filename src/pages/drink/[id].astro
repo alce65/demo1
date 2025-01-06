@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/layout.astro';
+import { fetchDrinkById, fetchRumDrinks } from '../../services/api.repo';
+
+const {id} = Astro.params
+if (!id) {
+    return
+}
+const drink  = await fetchDrinkById(id);
+
+export const getStaticPaths = async () => {
+    const drinks = await fetchRumDrinks();
+    const paths = drinks.map((drink) => ({
+        params: { id: drink.id },
+    }));
+    return paths;
+};
+
+---
+
+<Layout title={'Cóctel' + id} description="Learn the basics of Astro">
+    <section>
+        <hgroup>
+            <h2 title={id}>{drink.name}</h>
+            {drink.nameAlternate && <p>{drink.nameAlternate}</p>}
+        </hgroup>
+        <div class="wrapper">
+            <div>
+                <img transition:name={'img-' + drink.id} 
+                    src={drink.drinkThumb} alt={drink.name} />
+                <p class:list={[
+                    {
+                        punch: drink.category === 'Punch / Party Drink',
+                        cocktail: drink.category === 'Cocktail',
+                        ordinary: drink.category === 'Ordinary Drink',
+                        coffee: drink.category === 'Coffee / Tea',
+                        other: drink.category === 'Other / Unknown'
+                    }   
+                ]}>{drink.category}</p>
+                <p>{drink.alcoholic}</p>
+            </div>
+            <div class="info">
+                <dl>
+                    <dt>Glass</dt>
+                    <dd>{drink.glass}</dd>
+                    <dt>Instructions</dt>
+                    <dd>{drink.instructions}</dd>
+                    <dt>Instrucciones</dt>
+                    <dd>{drink.instructionsES}</dd>
+                    <dt>Ingredients</dt>
+                    <dd>
+                        <ul>
+                            {drink.ingredients.map((i) =>
+                            <li>{i.measure} {i.ingredient}</li>)}
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<!-- 
+"tags":[],
+"dateModified":"2016-02-03T14:23:36.000Z"} 
+-->
+
+<style>
+    .wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>

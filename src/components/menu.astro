@@ -1,0 +1,89 @@
+
+---
+import HeaderButton from './header.button.astro'
+const pages = [
+    { label: 'Inicio', path: '/' , slot: 'before', icon: 'icon-home'},
+    { label: 'Libros', path: '/books' , slot: 'after', icon: 'icon-books'},
+    { label: 'Acerca de', path: '/about', slot: 'before', icon: 'icon-astro'},
+    { label: 'Contacto', path: '/contact', slot: 'after', icon: 'icon-contact'},
+]
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    
+    <symbol id={pages[0].icon} viewBox="0 0 24 24" 
+        fill="none" stroke="currentColor" 
+        stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <title>{pages[0].label}</title>
+        <path d="M19.258 10.258l-7.258 -7.258l-9 9h2v7a2 2 0 0 0 2 2h4"></path>
+        <path d="M9 21v-6a2 2 0 0 1 2 -2h1.5"></path>
+        <path d="M17.8 20.817l-2.172 1.138a.392 .392 0 0 1 -.568 -.41l.415 -2.411l-1.757 -1.707a.389 .389 0 0 1 .217 -.665l2.428 -.352l1.086 -2.193a.392 .392 0 0 1 .702 0l1.086 2.193l2.428 .352a.39 .39 0 0 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567 .411l-2.172 -1.138z"></path>
+    </symbol>
+
+    <symbol  id={pages[1].icon} viewBox="0 0 24 24" 
+        fill="none" stroke="currentColor" 
+        stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <title>{pages[1].label}</title>
+        <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z"></path>
+        <path d="M19 16h-12a2 2 0 0 0 -2 2"></path>
+        <path d="M9 8h6"></path>
+      </symbol>
+
+    <symbol id={pages[2].icon} viewBox="0 0 24 24" 
+        fill="none" stroke="currentColor" 
+        stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <title>{pages[2].label}</title>
+        <path d="M14.972 3.483c.163 .196 .247 .46 .413 .987l3.64 11.53a15.5 15.5 0 0 0 -4.352 -1.42l-2.37 -7.723a.31 .31 0 0 0 -.296 -.213a.31 .31 0 0 0 -.295 .214l-2.342 7.718a15.5 15.5 0 0 0 -4.37 1.422l3.657 -11.53c.168 -.527 .251 -.79 .415 -.986c.144 -.172 .331 -.306 .544 -.388c.242 -.094 .527 -.094 1.099 -.094h2.612c.572 0 .858 0 1.1 .094c.213 .082 .4 .217 .545 .39"></path>
+        <path d="M9 18c0 1.5 2 3 3 4c1 -1 3 -3 3 -4q -3 1.5 -6 0"></path>
+    </symbol>
+
+    <symbol id={pages[3].icon} viewBox="0 0 24 24" 
+        fill="none" stroke="currentColor" 
+        stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <title>{pages[3].label}</title>
+        <path d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z"></path>
+        <path d="M10 16h6"></path>
+        <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+        <path d="M4 8h3"></path>
+        <path d="M4 12h3"></path>
+        <path d="M4 16h3"></path>
+    </symbol>
+
+</svg>
+
+
+<nav>
+    <ul>
+        {pages.map(({ label, path, slot, icon }) => 
+            <li>
+                <HeaderButton>
+                    <svg slot={slot} width="24" height="24"
+                    ><use href={"#"+icon}/></svg>
+                    <a href={path}>{label}</a>
+                </HeaderButton>
+            </li>
+        )}
+    </ul>
+</nav>
+
+<style>
+    symbol {
+        color: white;
+    }
+    nav {
+        background-color: #333;
+        color: white;
+    }
+
+    ul {
+        display: flex;
+        justify-content: space-around;
+        list-style: none;
+        padding: 0;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+</style>

@@ -1,22 +1,88 @@
+---
+import Header from "../components/header.astro"
+import { ClientRouter } from 'astro:transitions'
+
+
+interface Props {
+    title: string;
+    description: string;
+}
+
+const { title, description } = Astro.props
+const cssVars = {
+    space: '1rem',
+    dobleSpace: '2rem',
+    fontSize: '1rem',
+}
+const fontSize = cssVars.fontSize
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <meta name="description" content={description} />
+        <title>{title} - Learning Astro</title>
+        <ClientRouter />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <slot />
+        </main>
 	</body>
 </html>
 
-<style>
-	html,
+<style is:global define:vars={cssVars}>
+    :root {
+        --color-primary: #0070f3;
+        --color-secondary: #ff0080;
+        --color-tertiary: #333;
+    }
+	* {
+        box-sizing: border-box;
+    }
+    
+    html,
 	body {
 		margin: 0;
-		width: 100%;
-		height: 100%;
 	}
+
+    html {
+        font-family: 'Arial', sans-serif;
+        font-size: var(--fontSize);
+        line-height: 1.5;
+        min-height: 100vh;
+    }
+
+    p {
+        color: var(--color-secondary);
+    }
+    main {
+        padding: var(--space) var(--dobleSpace);
+    }
+    .punch {
+        background-color: #f00;
+        color: #fff;
+    }
+    .cocktail {
+        background-color: #0f0;
+        color: #000;
+    }
+    .ordinary {
+        background-color: #00f;
+        color: #fff;
+    }
+    .coffee {
+        background-color: #ff0;
+        color: #000;
+    }
+    .other {
+        background-color: #0ff;
+        color: #000;
+    }
+
 </style>

@@ -1,0 +1,56 @@
+---
+import type { Drink } from '../types'
+interface Props {
+    drink: Drink
+    mode: string
+}
+
+const { drink, mode } = Astro.props
+const link = mode === 'ssr' ? 
+    '/drink_ssr/' + drink.id : 
+    '/drink/' + drink.id
+---
+
+<li class="drink-card">
+    <h3 title={drink.id}>{drink.name}</h3>
+    <a href={link}>
+        <img transition:name={'img-' + drink.id}  src={drink.drinkThumb} alt={drink.name} />
+    </a>
+    <p class:list={[
+        {
+            punch: drink.category === 'Punch / Party Drink',
+            cocktail: drink.category === 'Cocktail',
+            ordinary: drink.category === 'Ordinary Drink',
+            coffee: drink.category === 'Coffee / Tea',
+            other: drink.category === 'Other / Unknown'
+        }   
+    ]}>{drink.category}</p>
+    <p>{drink.alcoholic}</p>
+</li>
+
+<style>
+    .drink-card {
+        display: grid;
+        grid-template-rows: subgrid;
+        grid-row: span 4;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+    }
+
+    img {
+        width: 100%;
+        max-width: 200px;
+        border-radius: 0.5rem;
+    }
+
+    h3 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+    }
+
+</style>

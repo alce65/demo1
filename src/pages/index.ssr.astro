@@ -8,7 +8,7 @@ const headerTitle = 'Inicio';
 const headerDescription = 'Learn the basics of Astro';
 
 const pageTitle: string = "Inicio"
-const pageSubTitle: string = "Página de inicio"
+const pageSubTitle: string = "Página de inicio - híbrido con SSR"
 
 let data: Drink[] = [];
 try {
@@ -31,7 +31,7 @@ try {
         <ul class="drinks-list">               
             {
                 data.map((drink) => 
-                    <DrinkCard drink={drink} mode="static" />
+                    <DrinkCard drink={drink} mode="ssr" />
                 )
             }
         </ul>

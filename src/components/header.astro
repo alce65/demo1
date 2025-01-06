@@ -1,0 +1,23 @@
+---
+import Counter from './counter.astro';
+import Menu from './menu.astro'
+const headerTitle = 'Learning Astro';
+---
+
+<header>
+    <hgroup>
+        <h1>{headerTitle}</h1>
+    </hgroup>
+    <Menu />
+    <Counter>
+</header>
+
+<style>
+    header {
+        background-color: #f8f8f8;
+        padding: 1rem;
+        h1 {
+            color: var(--color-primary);
+        }
+    }
+</style>

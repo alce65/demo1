@@ -1,0 +1,48 @@
+---
+import Layout from "../../layouts/layout.astro"
+import BookCard from "../../components/book.card.astro"
+import { getCollection } from 'astro:content';
+
+const books = await getCollection('books');
+
+const headerTitle = 'Books';
+const headerDescription = 'Learn the basics of Astro';
+
+const pageTitle: string = "Books"
+
+---
+
+<Layout title={headerTitle} description={headerDescription}>
+    <section class="hero">
+        <hgroup>
+            <h2>{pageTitle}</h2>
+        </hgroup>
+    </section>
+    <section class="books">
+        <ul>
+            {books.map((book) => (
+                <BookCard book={book} />
+            ))}
+        </ul>        
+    </section>
+</Layout>
+
+<style>
+    .hero {
+        background-color: #f0f0f0;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .books {
+        padding: 1rem;
+
+           ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: .5rem;
+            padding: 0;
+        }
+
+    }

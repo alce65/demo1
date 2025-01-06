@@ -1,0 +1,46 @@
+<section class="counter">
+    <output>0</output>
+    <button data-value="1">Increment</button>
+    <button data-value="-1">Decrement</button>
+</section>
+
+<script>
+    const output = document.querySelector('.counter output');
+    const buttons = document.querySelectorAll('.counter button');
+
+    if (!output || !buttons.length) {
+        throw new Error('Counter component is missing elements');
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener('click', (ev) => {
+            const target = ev.target as HTMLButtonElement;
+            const value = target.dataset.value;
+            if (!value || !output.textContent) {
+                return;
+            }
+            output.textContent = (+output.textContent + +value).toString();
+        });
+    });
+</script>
+
+<style>
+    .counter {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        output {
+            font-size: 2rem;
+            padding: 0.5rem;
+            border: 1px solid #333;
+            border-radius: 0.25rem;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 0.25rem;
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
+    }
+</style>
