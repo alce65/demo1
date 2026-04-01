@@ -2,7 +2,7 @@
 import type { Drink } from '../types'
 interface Props {
     drink: Drink
-    mode: string
+    mode: 'ssr' | 'static' // ssr / ssg (static)
 }
 
 const { drink, mode } = Astro.props

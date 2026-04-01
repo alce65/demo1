@@ -2,6 +2,7 @@
 import { SCORE_API_ENDPOINT } from 'astro:env/server';
 
 async function getScore() {
+    console.log('Fetching score from API...');
     const response = await fetch(SCORE_API_ENDPOINT);
     const data = await response.text();
     console.log({data})

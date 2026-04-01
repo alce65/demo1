@@ -1,5 +1,5 @@
 ---
-import Header from "../components/header.astro"
+import Header from "../components/header/header.astro"
 import { ClientRouter } from 'astro:transitions'
 
 
@@ -29,7 +29,7 @@ const fontSize = cssVars.fontSize
         <ClientRouter />
     </head>
     <body>
-        <Header />
+        <Header>Counter</Header>
         <main>
             <slot />
         </main>

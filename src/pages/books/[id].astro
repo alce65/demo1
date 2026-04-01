@@ -3,7 +3,7 @@ import Layout from '../../layouts/layout.astro';
 import BookScore from '../../components/book.score.astro';
 import { getCollection, render } from 'astro:content';
 import { SHOW_BUY_BUTTON } from 'astro:env/server';
-import type { Book } from '../../content/config';
+import type { Book } from '../../content.config';
 
 const { id } = Astro.params;
 if (!id) {
@@ -16,7 +16,7 @@ export const getStaticPaths = async () => {
     console.log(books);
     const paths = books.map((book) => ({
         params: {
-            id: book.slug,
+            id: book.id,
         },
         props: {
             book: book,
@@ -29,7 +29,7 @@ const { book } = Astro.props;
 const data: Book = book.data;
 const { Content } = await render(book);
 
-// export const prerender = true
+// export const prerender = true;
 ---
 
 <Layout title={'Book' + id} description="Learn the basics of Astro">
@@ -51,6 +51,9 @@ const { Content } = await render(book);
             <dt>Tiempo de lectura</dt>
             <dd>{data.readtime}</dd>
 
+            <!-- 
+                <BookScore>
+                -->
             <BookScore server:defer>
                 <dt class="score-fallback" slot="fallback">
                     Cargando puntuación...
