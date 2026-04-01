@@ -5,6 +5,8 @@ const filterUrl = apiUrl + 'filter.php';
 const cocktailUrl = apiUrl + 'lookup.php?i=';
 const rumUrl = filterUrl + '?i=rum';
 
+let rumDrinksCache: Drink[] | undefined;
+
 type DrinkSummary = {
     idDrink: string;
     strDrink: string;
@@ -15,7 +17,7 @@ type ApiDrink = {
     idDrink: string;
     strDrink: string;
     strDrinkAlternate: string | null;
-    strTags: string[] | null;
+    strTags: string | null;
     strVideo: string | null;
     strCategory: string;
     strIBA: string | null;
@@ -61,11 +63,11 @@ type ApiDrink = {
 };
 
 type DrinkResponse = {
-    drinks: DrinkSummary[];
+    drinks: DrinkSummary[] | null;
 };
 
 type FullDrinkResponse = {
-    drinks: ApiDrink[];
+    drinks: ApiDrink[] | null;
 };
 
 const processDrink = (drink: ApiDrink): Drink => {
@@ -81,7 +83,7 @@ const processDrink = (drink: ApiDrink): Drink => {
         id: drink.idDrink,
         name: drink.strDrink,
         nameAlternate: drink.strDrinkAlternate ?? '',
-        tags: drink.strTags ?? [],
+        tags: drink.strTags ? drink.strTags.split(',').map((tag) => tag.trim()) : [],
         category: drink.strCategory,
         alcoholic: drink.strAlcoholic,
         glass: drink.strGlass,
@@ -93,24 +95,33 @@ const processDrink = (drink: ApiDrink): Drink => {
     };
 };
 
-export const fetchDrinkById = async (id: string) => {
+const fetchDrinkDetails = async (id: string): Promise<Drink> => {
     const response = await fetch(cocktailUrl + id);
     const { drinks } = (await response.json()) as FullDrinkResponse;
-    return processDrink(drinks[0]);
-}
+    const [drink] = drinks ?? [];
+    if (!drink) {
+        throw new Error(`No drink found for id ${id}`);
+    }
+    return processDrink(drink);
+};
+
+export const fetchDrinkById = async (id: string) => {
+    const cachedDrink = rumDrinksCache?.find((drink) => drink.id === id);
+    if (cachedDrink) {
+        return cachedDrink;
+    }
+    return await fetchDrinkDetails(id);
+};
 
 export const fetchRumDrinks = async () => {
+    if (rumDrinksCache) {
+        return rumDrinksCache;
+    }
     const response = await fetch(rumUrl);
     const { drinks } = (await response.json()) as DrinkResponse;
-    const cocktailsFetch = drinks.map(async ({ idDrink }) => {
-        const response = await fetch(cocktailUrl + idDrink);
-        return await response.json();
-    });
-    const drinkResponses = (await Promise.all(
-        cocktailsFetch
-    )) as FullDrinkResponse[];
-    const result = drinkResponses.map(({ drinks }) =>
-        processDrink(drinks[0])
-    ) as Drink[];
-    return result;
+    const summaries = drinks ?? [];
+    rumDrinksCache = await Promise.all(
+        summaries.map(async ({ idDrink }) => await fetchDrinkDetails(idDrink))
+    );
+    return rumDrinksCache;
 };

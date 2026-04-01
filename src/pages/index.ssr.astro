@@ -1,14 +1,16 @@
 ---
-import Layout from "../layouts/layout.astro"
-import { fetchRumDrinks } from "../services/api.repo";
-import DrinkCard from "../components/drink.card.astro";
-import type { Drink } from "../types";
+import Layout from '../layouts/layout.astro';
+import { fetchRumDrinks } from '../services/api.repo';
+import DrinkCard from '../components/drink.card.astro';
+import type { Drink } from '../types';
+
+export const prerender = false;
 
 const headerTitle = 'Inicio';
 const headerDescription = 'Learn the basics of Astro';
 
-const pageTitle: string = "Inicio"
-const pageSubTitle: string = "Página de inicio - híbrido con SSR"
+const pageTitle: string = 'Inicio';
+const pageSubTitle: string = 'Página de inicio - híbrido con SSR';
 
 let data: Drink[] = [];
 try {
@@ -16,7 +18,6 @@ try {
 } catch (error) {
     console.error(error);
 }
-
 ---
 
 <Layout title={headerTitle} description={headerDescription}>
@@ -28,34 +29,35 @@ try {
     </section>
     <section class="drinks">
         <h3>Rum Drinks</h3>
-        <ul class="drinks-list">               
-            {
-                data.map((drink) => 
-                    <DrinkCard drink={drink} mode="ssr" />
-                )
-            }
+        <ul class="drinks-list">
+            {data.map((drink) => <DrinkCard drink={drink} mode="ssr" />)}
         </ul>
+        {
+            data.length === 0 && (
+                <p class="empty-state">No se pudieron cargar los drinks.</p>
+            )
+        }
     </section>
 </Layout>
 
-
 <style>
-   h2 {
-    color: red;
-  }
-  .drinks {
-    ul {
-        list-style: none;
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        grid-template-rows: repeat(4, auto);
+    h2 {
+        color: red;
     }
-  }
-
-
+    .drinks {
+        ul {
+            list-style: none;
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-rows: repeat(4, auto);
+        }
+    }
+    .empty-state {
+        margin-top: 1rem;
+    }
 </style>
 
 <script>
-  console.log('Hello, Astro!');
+    console.log('Hello, Astro!');
 </script>

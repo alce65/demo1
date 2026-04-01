@@ -5,21 +5,30 @@
 </section>
 
 <script>
-    const output = document.querySelector('.counter output');
-    const buttons = document.querySelectorAll('.counter button');
+    console.log('Loaded counter');
 
-    if (!output || !buttons.length) {
-        throw new Error('Counter component is missing elements');
-    }
+    let value = 0;
 
-    buttons.forEach(button => {
-        button.addEventListener('click', (ev) => {
-            const target = ev.target as HTMLButtonElement;
-            const value = target.dataset.value;
-            if (!value || !output.textContent) {
-                return;
-            }
-            output.textContent = (+output.textContent + +value).toString();
+    document.addEventListener('astro:page-load', () => {
+        console.log('Reloaded counter');
+        const output = document.querySelector('.counter output');
+        const buttons = document.querySelectorAll('.counter button');
+
+        if (!output || !buttons.length) {
+            throw new Error('Counter component is missing elements');
+        }
+
+        output.textContent = value.toString();
+        buttons.forEach((button) => {
+            button.addEventListener('click', (ev) => {
+                const target = ev.target as HTMLButtonElement;
+                const delta = target.dataset.value;
+                if (!delta || !output.textContent) {
+                    return;
+                }
+                value = +output.textContent + +delta;
+                output.textContent = value.toString();
+            });
         });
     });
 </script>

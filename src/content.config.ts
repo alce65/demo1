@@ -5,7 +5,7 @@ import type { InferEntrySchema } from 'astro:content';
 // z -> zod schema <https://zod.dev/>, incluido en Astro
 
 const books = defineCollection({
-    // loader: glob({ pattern: '**/*.md', base: './src/content/books' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/books' }),
     schema: z.object({
         title: z.string(),
         author: z.string(),
@@ -24,7 +24,7 @@ export const collections = { books };
 
 /* 
 
-Cuando no se usa loader,
+Hasta Astro 6, cuando no se usa loader,
 el tipo devuelto por getCollection será
 
 books: {
