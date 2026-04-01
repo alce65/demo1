@@ -6,12 +6,17 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest"
   },
   "dependencies": {
-    "astro": "^5.1.1"
+    "@astrojs/node": "^10.0.4",
+    "astro": "^6.1.2"
   },
   "prettier": {
     "singleQuote": true
+  },
+  "devDependencies": {
+    "vitest": "^4.1.2"
   }
 }
